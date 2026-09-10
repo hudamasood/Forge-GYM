@@ -58,7 +58,7 @@ export class UserService {
       return null;
     }
     if (!(await this.hasher.verify(password, user.passwordHash))) return null;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const { passwordHash, ...safe } = user;
     return safe;
   }

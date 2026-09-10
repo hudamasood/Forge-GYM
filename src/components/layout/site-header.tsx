@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
@@ -27,13 +28,18 @@ export function portalHref(role: HeaderUser["role"]) {
   return role === "ADMIN" ? "/admin" : role === "TRAINER" ? "/trainer" : "/dashboard";
 }
 
-export function SiteHeader({ user }: { user: HeaderUser | null }) {
+export function SiteHeader() {
   const pathname = usePathname();
+  const { data: session, update } = useSession();
+  const user: HeaderUser | null = session?.user ? { name: session.user.name ?? "", role: session.user.role } : null;
   const { count, ready } = useCart();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => setOpen(false), [pathname]);
+  // Re-read the session after navigations so a login/logout elsewhere is reflected.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(() => void update(), [pathname]);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();

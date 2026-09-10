@@ -68,7 +68,7 @@ function paginate<T>(items: T[], request: PageRequest): Page<T> {
 }
 
 function omitPassword(user: UserWithPassword): User {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   const { passwordHash, ...rest } = user;
   return rest;
 }
