@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Oswald, Work_Sans } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/components/ui/toast";
+import { CartProvider } from "@/components/store/cart-context";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -27,7 +29,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${oswald.variable} ${workSans.variable}`}>
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="min-h-dvh antialiased">
+        <ToastProvider>
+          <CartProvider>{children}</CartProvider>
+        </ToastProvider>
+      </body>
     </html>
   );
 }

@@ -55,7 +55,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading || undefined}
         {...props}
       >
-        {loading && <Spinner className="size-4" label={loadingText ?? "Loading"} />}
+        {loading && (loadingText ? <span aria-hidden className="inline-block size-4 animate-spin rounded-full border-2 border-current border-r-transparent" /> : <Spinner className="size-4" />)}
         {loading && loadingText ? loadingText : children}
       </button>
     );
