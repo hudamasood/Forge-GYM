@@ -47,7 +47,7 @@ export class PaymentWebhookService {
         return;
       }
       case "payment.checkout_completed": {
-        const transitioned = await this.orders.markPaid(event.orderId, event.paymentIntentId);
+        const transitioned = await this.orders.markPaid(event.orderId, event.paymentIntentId, event.shippingAddress);
         if (!transitioned) return;
         const order = await this.orderRepo.findById(event.orderId);
         const user = order && (await this.users.findById(order.userId));

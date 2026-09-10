@@ -51,6 +51,9 @@ export class ScheduleService {
   async delete(id: string): Promise<void> {
     const current = await this.schedules.findDetail(id);
     if (!current) throw new NotFoundError("Schedule not found");
+    if (current.bookedCount > 0 && current.startTime > this.now()) {
+      throw new ConflictError("This session has confirmed bookings — cancel them before deleting it");
+    }
     await this.schedules.delete(id);
   }
 

@@ -181,7 +181,7 @@ model Schedule {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  class    Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  class    Class     @relation(fields: [classId], references: [id])
   trainer  Trainer   @relation(fields: [trainerId], references: [id])
   space    Space     @relation(fields: [spaceId], references: [id])
   bookings Booking[]

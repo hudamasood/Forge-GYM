@@ -304,7 +304,7 @@ export interface IOrderRepository {
    * Atomically moves a PENDING order to PAID and decrements stock for each
    * item. Returns false when the order was not PENDING (already processed).
    */
-  markPaid(orderId: string, paymentIntentId: string | null): Promise<boolean>;
+  markPaid(orderId: string, paymentIntentId: string | null, shippingAddress?: Record<string, string> | null): Promise<boolean>;
   setStatus(orderId: string, status: OrderStatus): Promise<Order>;
   listForUser(userId: string): Promise<Order[]>;
   listAll(request: PageRequest & { status?: OrderStatus }): Promise<Page<Order & { user: Pick<User, "id" | "name" | "email"> }>>;

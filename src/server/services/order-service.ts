@@ -89,10 +89,10 @@ export class OrderService {
   }
 
   /** Called from the verified payment webhook. Idempotent. */
-  async markPaid(orderId: string, paymentIntentId: string | null) {
+  async markPaid(orderId: string, paymentIntentId: string | null, shippingAddress: Record<string, string> | null = null) {
     const order = await this.orders.findById(orderId);
     if (!order) throw new NotFoundError("Order not found");
-    return this.orders.markPaid(orderId, paymentIntentId);
+    return this.orders.markPaid(orderId, paymentIntentId, shippingAddress);
   }
 
   async markCheckoutExpired(orderId: string) {

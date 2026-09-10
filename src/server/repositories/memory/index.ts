@@ -503,11 +503,12 @@ export class MemoryOrderRepository implements IOrderRepository {
     const o = this.db.orders.find((x) => x.id === orderId);
     if (o) o.stripeCheckoutSessionId = sessionId;
   }
-  async markPaid(orderId: string, paymentIntentId: string | null) {
+  async markPaid(orderId: string, paymentIntentId: string | null, shippingAddress: Record<string, string> | null = null) {
     const o = this.db.orders.find((x) => x.id === orderId);
     if (!o || o.status !== "PENDING") return false;
     o.status = "PAID";
     o.stripePaymentIntentId = paymentIntentId;
+    o.shippingAddress = shippingAddress;
     for (const item of o.items) {
       const p = this.db.products.find((x) => x.id === item.productId);
       if (p) p.stock -= item.quantity;
