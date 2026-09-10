@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const tag = randomUUID().slice(0, 8);
 
 let scheduleId: string;
-let memberIds: string[] = [];
+const memberIds: string[] = [];
 let outsiderId: string;
 let service: BookingService;
 
