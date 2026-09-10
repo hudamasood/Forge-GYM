@@ -68,7 +68,6 @@ function paginate<T>(items: T[], request: PageRequest): Page<T> {
 }
 
 function omitPassword(user: UserWithPassword): User {
-   
   const { passwordHash, ...rest } = user;
   return rest;
 }

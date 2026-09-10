@@ -49,6 +49,8 @@
 
   --animate-fade-up: fade-up 0.7s var(--ease-forge) both;
   --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-glow: glow 9s ease-in-out infinite;
 
   @keyframes fade-up {
     from {
@@ -61,6 +63,27 @@
     }
   }
 
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-33.3333%);
+    }
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      opacity: 0.85;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
   @keyframes shimmer {
     from {
       background-position: -200% 0;
@@ -68,6 +91,17 @@
     to {
       background-position: 200% 0;
     }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -146,6 +180,16 @@
     pointer-events: none;
     opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry var(--reveal-offset, 0%) entry calc(40% + var(--reveal-offset, 0%));
+      }
+    }
   }
 
   .skeleton {
