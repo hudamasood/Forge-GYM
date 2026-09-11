@@ -1,5 +1,5 @@
 import "server-only";
-import { DomainError, ValidationError } from "@/server/domain/errors";
+import { isDomainError } from "@/server/domain/errors";
 
 export interface ActionState {
   ok: boolean;
@@ -17,8 +17,7 @@ export async function runAction(body: () => Promise<string | void>): Promise<Act
     return { ok: true, message: message ?? undefined };
   } catch (error) {
     if (isNextControlFlow(error)) throw error;
-    if (error instanceof ValidationError) return { ok: false, error: error.message, fieldErrors: error.fieldErrors };
-    if (error instanceof DomainError) return { ok: false, error: error.message };
+    if (isDomainError(error)) return { ok: false, error: error.message, fieldErrors: error.fieldErrors };
     console.error("[action] unhandled error", error);
     return { ok: false, error: "Something went wrong. Please try again." };
   }

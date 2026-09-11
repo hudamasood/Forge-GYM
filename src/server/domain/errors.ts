@@ -2,14 +2,34 @@
  * Domain errors. Services throw these; the application layer (Route Handlers
  * and Server Actions) maps them to HTTP status codes in one place.
  */
+const DOMAIN_ERROR = Symbol.for("forge.domain-error");
+
 export abstract class DomainError extends Error {
   abstract readonly status: number;
   abstract readonly code: string;
+  /** Cross-bundle brand: the bundler may load this module more than once, which breaks `instanceof`. */
+  readonly [DOMAIN_ERROR] = true;
 
   constructor(message: string) {
     super(message);
     this.name = new.target.name;
   }
+}
+
+export type DomainErrorCode =
+  | "VALIDATION_ERROR"
+  | "UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "CONFLICT"
+  | "CAPACITY_REACHED"
+  | "PAYMENT_ERROR"
+  | "RATE_LIMITED";
+
+/** Use instead of `instanceof` anywhere outside the domain layer. */
+export function isDomainError(error: unknown, code?: DomainErrorCode): error is DomainError & { fieldErrors?: Record<string, string[]> } {
+  const branded = typeof error === "object" && error !== null && (error as Record<symbol, unknown>)[DOMAIN_ERROR] === true;
+  return branded && (!code || (error as DomainError).code === code);
 }
 
 export class ValidationError extends DomainError {

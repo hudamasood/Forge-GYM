@@ -4,7 +4,7 @@ import { authConfig } from "@/auth.config";
 import { services } from "@/server/container";
 import { LIMITS, clientIp, rateLimit } from "@/server/http/rate-limit";
 import { loginSchema } from "@/server/validation/schemas";
-import { RateLimitError } from "@/server/domain/errors";
+import { isDomainError } from "@/server/domain/errors";
 
 class RateLimitedSignin extends CredentialsSignin {
   code = "rate_limited";
@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           rateLimit(`login:ip:${clientIp(request.headers)}`, LIMITS.login.limit * 3, LIMITS.login.windowMs);
           rateLimit(`login:email:${parsed.data.email}`, LIMITS.login.limit, LIMITS.login.windowMs);
         } catch (error) {
-          if (error instanceof RateLimitError) throw new RateLimitedSignin();
+          if (isDomainError(error, "RATE_LIMITED")) throw new RateLimitedSignin();
           throw error;
         }
 

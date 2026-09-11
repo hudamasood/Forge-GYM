@@ -1,6 +1,6 @@
 import "server-only";
 import { NextResponse } from "next/server";
-import { DomainError, ValidationError } from "@/server/domain/errors";
+import { ValidationError, isDomainError } from "@/server/domain/errors";
 
 export interface ApiErrorBody {
   error: { code: string; message: string; fieldErrors?: Record<string, string[]> };
@@ -8,9 +8,9 @@ export interface ApiErrorBody {
 
 /** Maps any thrown error to a JSON response. Unknown errors never leak details. */
 export function errorResponse(error: unknown) {
-  if (error instanceof DomainError) {
+  if (isDomainError(error)) {
     const body: ApiErrorBody = {
-      error: { code: error.code, message: error.message, ...(error instanceof ValidationError ? { fieldErrors: error.fieldErrors } : {}) },
+      error: { code: error.code, message: error.message, ...(error.fieldErrors ? { fieldErrors: error.fieldErrors } : {}) },
     };
     return NextResponse.json(body, { status: error.status });
   }

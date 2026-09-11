@@ -103,9 +103,11 @@ function build() {
 
 export type Container = ReturnType<typeof build>;
 
-const globalForContainer = globalThis as unknown as { forgeContainer?: Container };
+// Module-scoped (not globalThis) so code edits apply on hot reload; the Prisma
+// client underneath is the shared process-wide singleton.
+let container: Container | undefined;
 
 export function services(): Container {
-  globalForContainer.forgeContainer ??= build();
-  return globalForContainer.forgeContainer;
+  container ??= build();
+  return container;
 }
