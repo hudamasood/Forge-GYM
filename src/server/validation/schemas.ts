@@ -61,7 +61,7 @@ export const contactSchema = z.object({
   subject: z.string().trim().min(3, "Add a subject").max(120),
   message: z.string().trim().min(10, "Tell us a little more").max(4000),
   // Honeypot: real users never fill this hidden field.
-  company: z.string().max(0).optional(),
+  company: z.string().max(200).optional(),
 });
 
 export const bookingSchema = z.object({ scheduleId: id });
