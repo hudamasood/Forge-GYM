@@ -41,7 +41,7 @@ export default async function TrainerAvailabilityPage() {
             <section key={d} aria-label={d} className={cn("rounded-2xl border p-4", daySlots.length ? "border-ember-400/25 bg-ember-500/[0.05]" : "border-bone-50/8 bg-ink-800/40")}>
               <h2 className="font-display text-lg text-bone-50">{d}</h2>
               {daySlots.length === 0 ? (
-                <p className="mt-2 text-sm text-ink-400">Off</p>
+                <p className="mt-2 text-sm text-ink-300">Off</p>
               ) : (
                 <ul className="mt-2 flex flex-col gap-2">
                   {daySlots.map((s) => (

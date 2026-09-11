@@ -69,7 +69,7 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-bone-50/6">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-ink-400 sm:flex-row sm:justify-between sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-ink-300 sm:flex-row sm:justify-between sm:px-8">
           <p>© {new Date().getFullYear()} FORGE. All rights reserved.</p>
           <p>Hours: {GYM.hours.weekdays} weekdays · {GYM.hours.weekends} weekends</p>
         </div>

@@ -30,9 +30,17 @@ async function adminMutation(entity: string, action: string, entityId: string | 
   return result;
 }
 
-/** Public pages that display catalog data are ISR-cached; refresh them after admin edits. */
+/**
+ * Public pages that display catalog data are ISR-cached; refresh them after
+ * admin edits. Targeted per route (not the root layout), so the admin portal's
+ * own client router state is left alone.
+ */
+const PUBLIC_PAGES = ["/", "/classes", "/trainers", "/memberships", "/spaces", "/store", "/sitemap.xml"];
+const PUBLIC_DETAIL_ROUTES = ["/classes/[slug]", "/trainers/[slug]", "/spaces/[slug]", "/store/[slug]"];
+
 function revalidateSite() {
-  revalidatePath("/", "layout");
+  for (const path of PUBLIC_PAGES) revalidatePath(path);
+  for (const route of PUBLIC_DETAIL_ROUTES) revalidatePath(route, "page");
 }
 
 // ---------------------------------------------------------------- Members

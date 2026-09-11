@@ -95,7 +95,7 @@ export default async function HomePage() {
       </section>
 
       {/* Discipline marquee */}
-      <div className="overflow-hidden border-y border-bone-50/8 bg-ink-950 py-5" aria-hidden>
+      <div className="overflow-hidden border-y border-bone-50/8 bg-ink-950 py-5" aria-hidden data-decorative>
         <div className="flex w-max animate-marquee gap-12 font-display text-3xl uppercase tracking-wider text-bone-50/15 motion-reduce:animate-none">
           {[...objects, ...objects, ...objects].map((o, i) => (
             <span key={`${o.slug}-${i}`} className="flex items-center gap-12">
@@ -154,7 +154,7 @@ export default async function HomePage() {
               <Reveal as="li" key={item.step} delay={i * 80} className="group flex flex-col gap-4 bg-ink-900 p-6 transition-colors hover:bg-ink-800">
                 <span className="flex items-center justify-between">
                   <item.icon className="size-6 text-ember-400 transition-transform duration-300 group-hover:-translate-y-0.5" aria-hidden />
-                  <span className="font-display text-sm text-ink-400">0{i + 1}</span>
+                  <span className="font-display text-sm text-ink-300">0{i + 1}</span>
                 </span>
                 <span className="font-display text-2xl uppercase text-bone-50">{item.step}</span>
                 <span className="text-sm leading-relaxed text-ink-300">{item.text}</span>

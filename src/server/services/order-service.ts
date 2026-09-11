@@ -120,7 +120,7 @@ export class OrderService {
     return this.orders.setStatus(orderId, status);
   }
 
-  createProduct(input: ProductInput) {
+  async createProduct(input: ProductInput) {
     validateProduct(input);
     return this.products.create(input);
   }

@@ -2,7 +2,8 @@ import "server-only";
 
 /** Server-side configuration, read once from environment variables (spec B5: secrets never reach the client). */
 export const config = {
-  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")).replace(/\/$/, ""),
+  // SITE_URL is read at runtime; NEXT_PUBLIC_SITE_URL is inlined at build time.
+  siteUrl: (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")).replace(/\/$/, ""),
   isProduction: process.env.NODE_ENV === "production",
   authSecret: process.env.AUTH_SECRET ?? "",
   stripe: {
@@ -17,7 +18,9 @@ export const config = {
 };
 
 /**
- * Local development without Stripe keys uses a simulated checkout so every
- * flow can be exercised end to end. Never available in production.
+ * Without Stripe keys, a simulated checkout lets every flow be exercised end
+ * to end: automatically in development, and in production builds only when
+ * ENABLE_TEST_CHECKOUT=1 (CI e2e / staging). Never set that on a real
+ * deployment; it is ignored whenever a Stripe key is configured.
  */
-export const devPaymentsEnabled = !config.isProduction && !config.stripe.secretKey;
+export const devPaymentsEnabled = !config.stripe.secretKey && (!config.isProduction || process.env.ENABLE_TEST_CHECKOUT === "1");

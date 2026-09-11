@@ -18,11 +18,12 @@ function JoinButton({ plan, interval }: { plan: PlanCardData; interval: BillingI
   const featured = plan.type === "ALL_ACCESS";
 
   const join = async () => {
-    if (status !== "authenticated") {
+    if (status === "unauthenticated") {
       router.push(`/signup?callbackUrl=${encodeURIComponent("/memberships")}`);
       return;
     }
-    if (data.user.role !== "MEMBER") {
+    // While the session is still loading, let the server decide (401 → sign up).
+    if (status === "authenticated" && data.user.role !== "MEMBER") {
       toast({ tone: "info", title: "Member accounts only", description: "Staff accounts can't buy memberships. Log in with a member account." });
       return;
     }
@@ -38,7 +39,7 @@ function JoinButton({ plan, interval }: { plan: PlanCardData; interval: BillingI
         window.location.assign(body.url);
         return;
       }
-      if (res.status === 401) router.push(`/login?callbackUrl=${encodeURIComponent("/memberships")}`);
+      if (res.status === 401) router.push(`/signup?callbackUrl=${encodeURIComponent("/memberships")}`);
       else toast({ tone: "error", title: "Couldn't start checkout", description: body.error?.message ?? "Please try again." });
     } catch {
       toast({ tone: "error", title: "Network error", description: "Check your connection and try again." });

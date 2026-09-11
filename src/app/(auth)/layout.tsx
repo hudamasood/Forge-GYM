@@ -21,7 +21,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </p>
           <p className="max-w-sm text-ink-300">Six dedicated spaces. Coaches who care about your form. Memberships built around how you actually train.</p>
         </div>
-        <p className="text-xs text-ink-400">© {new Date().getFullYear()} FORGE</p>
+        <p className="text-xs text-ink-300">© {new Date().getFullYear()} FORGE</p>
       </aside>
       <main id="main" className="flex flex-col px-5 py-8 sm:px-10">
         <div className="flex items-center justify-between">

@@ -25,7 +25,7 @@ export default async function AdminOverviewPage() {
               <li key={a.id} className="flex flex-wrap justify-between gap-2 py-2.5">
                 <span className="text-bone-100">
                   <span className="font-medium text-bone-50">{a.actorName}</span> {a.action} {a.entity}
-                  {a.entityId ? <span className="text-ink-400"> · {a.entityId.slice(-8)}</span> : null}
+                  {a.entityId ? <span className="text-ink-300"> · {a.entityId.slice(-8)}</span> : null}
                 </span>
                 <span className="text-ink-300">{formatDateTime(a.createdAt)}</span>
               </li>
