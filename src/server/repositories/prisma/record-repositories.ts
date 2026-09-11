@@ -5,6 +5,7 @@ import type {
   IAnalyticsRepository,
   IAuditLogRepository,
   IContactMessageRepository,
+  ISitemapRepository,
   IWebhookEventRepository,
 } from "@/server/repositories/interfaces";
 import { ENTITLED_MEMBERSHIP_STATUSES } from "@/server/domain/types";
@@ -101,6 +102,42 @@ export class PrismaAnalyticsRepository implements IAnalyticsRepository {
       membershipsByPlan: byPlan
         .map((b) => ({ planName: planNames.get(b.planId) ?? "Unknown", count: b._count._all }))
         .sort((a, b) => b.count - a.count),
+    };
+  }
+}
+
+export class PrismaSitemapRepository implements ISitemapRepository {
+  constructor(private readonly db: Db) {}
+
+  async detailPages() {
+    const [classes, trainers, objects, products] = await Promise.all([
+      this.db.class.findMany({ select: { slug: true, updatedAt: true } }),
+      this.db.trainer.findMany({ select: { slug: true, updatedAt: true } }),
+      this.db.accessObject.findMany({ select: { slug: true, updatedAt: true, space: { select: { updatedAt: true } } } }),
+      this.db.product.findMany({ select: { slug: true, updatedAt: true } }),
+    ]);
+    return [
+      ...classes.map((c) => ({ path: `/classes/${c.slug}`, lastModified: c.updatedAt })),
+      ...trainers.map((t) => ({ path: `/trainers/${t.slug}`, lastModified: t.updatedAt })),
+      ...objects.map((o) => ({ path: `/spaces/${o.slug}`, lastModified: o.space && o.space.updatedAt > o.updatedAt ? o.space.updatedAt : o.updatedAt })),
+      ...products.map((p) => ({ path: `/store/${p.slug}`, lastModified: p.updatedAt })),
+    ];
+  }
+
+  async sectionLastModified() {
+    const [classes, trainers, spaces, store, memberships] = await Promise.all([
+      this.db.class.aggregate({ _max: { updatedAt: true } }),
+      this.db.trainer.aggregate({ _max: { updatedAt: true } }),
+      this.db.accessObject.aggregate({ _max: { updatedAt: true } }),
+      this.db.product.aggregate({ _max: { updatedAt: true } }),
+      this.db.membershipPlan.aggregate({ _max: { updatedAt: true } }),
+    ]);
+    return {
+      classes: classes._max.updatedAt,
+      trainers: trainers._max.updatedAt,
+      spaces: spaces._max.updatedAt,
+      store: store._max.updatedAt,
+      memberships: memberships._max.updatedAt,
     };
   }
 }

@@ -31,10 +31,11 @@ import {
   PrismaAnalyticsRepository,
   PrismaAuditLogRepository,
   PrismaContactMessageRepository,
+  PrismaSitemapRepository,
   PrismaWebhookEventRepository,
 } from "@/server/repositories/prisma/record-repositories";
 import { AccessObjectService } from "@/server/services/access-object-service";
-import { AnalyticsService, AuditService, ContactService } from "@/server/services/admin-services";
+import { AnalyticsService, AuditService, ContactService, SeoService } from "@/server/services/admin-services";
 import { BookingService } from "@/server/services/booking-service";
 import { ClassService } from "@/server/services/class-service";
 import { MembershipService } from "@/server/services/membership-service";
@@ -98,6 +99,7 @@ function build() {
     analytics: new AnalyticsService(new PrismaAnalyticsRepository(prisma), now),
     audit: new AuditService(new PrismaAuditLogRepository(prisma)),
     contact: new ContactService(new PrismaContactMessageRepository(prisma), notifications, config.email.contactInbox),
+    seo: new SeoService(new PrismaSitemapRepository(prisma)),
   };
 }
 

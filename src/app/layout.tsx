@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Oswald, Work_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { SITE_URL } from "@/lib/site";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -17,6 +18,8 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: "FORGE",
   title: "FORGE | Strength is made, not born",
   description: "FORGE is a premium strength gym with six dedicated training spaces, object-based memberships and expert coaching.",
 };

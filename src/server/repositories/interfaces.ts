@@ -347,6 +347,18 @@ export interface AnalyticsSummary {
   membershipsByPlan: { planName: string; count: number }[];
 }
 
+export interface SitemapEntry {
+  path: string;
+  lastModified: Date;
+}
+
+export interface ISitemapRepository {
+  /** Public detail pages with the last time their underlying record changed. */
+  detailPages(): Promise<SitemapEntry[]>;
+  /** Most recent change per public section, for listing pages. */
+  sectionLastModified(): Promise<Record<"classes" | "trainers" | "spaces" | "store" | "memberships", Date | null>>;
+}
+
 export interface IAnalyticsRepository {
   summary(now: Date, lowStockThreshold: number): Promise<AnalyticsSummary>;
 }
