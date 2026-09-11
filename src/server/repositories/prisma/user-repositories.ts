@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma/client";
 import type { User } from "@/server/domain/types";
 import type { CreateUserInput, IPasswordResetTokenRepository, IUserRepository, PageRequest, UpdateUserInput } from "@/server/repositories/interfaces";
 import type { Role } from "@/server/domain/types";
-import { type Db, defined, pageArgs, toPage, uniqueOrConflict } from "./shared";
+import { type Db, defined, deleteOrConflict, pageArgs, toPage, uniqueOrConflict } from "./shared";
 
 const userSelect = {
   id: true,
@@ -66,7 +66,7 @@ export class PrismaUserRepository implements IUserRepository {
   }
 
   async delete(id: string) {
-    await this.db.user.delete({ where: { id } });
+    await deleteOrConflict(() => this.db.user.delete({ where: { id } }), "This account has store orders or admin activity on record, so it can't be deleted. Change its role instead.");
   }
 }
 

@@ -70,6 +70,11 @@ export class BookingService {
     return this.bookings.listForUser(userId, { from: this.now() });
   }
 
+  /** Admin listing of every booking. */
+  listAll(request: Parameters<IBookingRepository["listAll"]>[0]) {
+    return this.bookings.listAll(request);
+  }
+
   async listHistoryForUser(userId: string): Promise<BookingWithSchedule[]> {
     return this.bookings.listForUser(userId, { includeCancelled: true });
   }
