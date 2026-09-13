@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { Photo } from "@/components/brand/photo";
+import { SITE_IMAGES } from "@/lib/imagery";
 
 export const metadata: Metadata = { robots: { index: false, follow: true } };
 
@@ -9,7 +11,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1.1fr_1fr]">
       <aside className="grain relative hidden overflow-hidden border-r border-bone-50/8 bg-ink-950 lg:flex lg:flex-col lg:justify-between lg:p-12">
-        <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_20%,rgba(221,90,34,0.35),transparent_70%),radial-gradient(50%_50%_at_90%_90%,rgba(74,85,96,0.35),transparent_70%)]" />
+        <Photo image={SITE_IMAGES.auth} sizes="55vw" decorative className="absolute inset-0 -z-10" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/70" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_20%,rgba(221,90,34,0.3),transparent_70%)]" />
         <Logo />
         <div className="flex flex-col gap-6">
           <p className="font-display text-7xl font-semibold uppercase leading-[0.95] text-bone-50 xl:text-8xl">

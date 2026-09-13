@@ -51,6 +51,27 @@
   --animate-shimmer: shimmer 1.6s linear infinite;
   --animate-marquee: marquee 40s linear infinite;
   --animate-glow: glow 9s ease-in-out infinite;
+  --animate-hero-zoom: hero-zoom 20s var(--ease-forge) both;
+  --animate-eq: eq 1.1s ease-in-out infinite;
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.12);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes eq {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 
   @keyframes fade-up {
     from {

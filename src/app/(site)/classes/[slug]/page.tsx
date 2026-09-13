@@ -6,6 +6,7 @@ import { services } from "@/server/container";
 import { isDomainError } from "@/server/domain/errors";
 import { Container } from "@/components/layout/section";
 import { ArtPanel, OBJECT_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DifficultyBadge } from "@/components/cards/badges";
@@ -14,6 +15,7 @@ import { EmptyState } from "@/components/ui/states";
 import { JsonLd } from "@/components/seo/json-ld";
 import { absoluteUrl, breadcrumbJsonLd, buildMetadata } from "@/lib/seo";
 import { formatUsd, titleCase } from "@/lib/format";
+import { classImage } from "@/lib/imagery";
 import { GYM } from "@/lib/site";
 
 export const revalidate = 60;
@@ -129,7 +131,13 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ sl
               ))}
             </dl>
           </div>
-          <ArtPanel seed={gymClass.slug} icon={OBJECT_ICONS[gymClass.accessObject.slug]} label={gymClass.accessObject.name.split(" ")[0]} className="aspect-[4/3] animate-fade-up rounded-3xl border border-bone-50/8 [animation-delay:150ms]" />
+          <Photo
+            image={classImage(gymClass.slug, gymClass.imageUrl)}
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            priority
+            className="aspect-[4/3] animate-fade-up rounded-3xl border border-bone-50/8 shadow-warm-lg [animation-delay:150ms]"
+            fallback={<ArtPanel seed={gymClass.slug} icon={OBJECT_ICONS[gymClass.accessObject.slug]} label={gymClass.accessObject.name.split(" ")[0]} className="aspect-[4/3] animate-fade-up rounded-3xl border border-bone-50/8 [animation-delay:150ms]" />}
+          />
         </Container>
       </div>
 

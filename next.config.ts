@@ -35,8 +35,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  // The ambient music player owns the bottom-left corner.
+  devIndicators: { position: "bottom-right" },
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 80],
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
   experimental: {

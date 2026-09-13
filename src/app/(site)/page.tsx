@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
 import { ArtPanel, OBJECT_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { SITE_IMAGES, spaceImage } from "@/lib/imagery";
 import { TrainerCard } from "@/components/cards/trainer-card";
 import { ProductCard } from "@/components/cards/product-card";
 import { DifficultyBadge } from "@/components/cards/badges";
@@ -52,8 +54,10 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="grain relative -mt-18 flex min-h-[100svh] items-end overflow-hidden pb-16 pt-36 sm:pb-24">
         <div aria-hidden className="absolute inset-0 -z-10">
-          <div className="absolute -right-[20%] -top-[30%] size-[70rem] animate-glow rounded-full bg-[radial-gradient(circle,rgba(221,90,34,0.38),rgba(127,42,8,0.12)_40%,transparent_65%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(250,248,244,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(250,248,244,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(80%_70%_at_60%_40%,black,transparent)]" />
+          <Photo image={SITE_IMAGES.hero} sizes="100vw" priority decorative className="absolute inset-0" imgClassName="animate-hero-zoom" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/60 to-ink-950/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/40 to-ink-950/50" />
+          <div className="absolute -right-[20%] -top-[30%] size-[70rem] animate-glow rounded-full bg-[radial-gradient(circle,rgba(221,90,34,0.28),rgba(127,42,8,0.1)_40%,transparent_65%)] mix-blend-screen" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-ink-900 to-transparent" />
         </div>
         <Container className="flex flex-col gap-10">
@@ -132,7 +136,13 @@ export default async function HomePage() {
                   href={`/spaces/${obj.slug}`}
                   className="group relative block overflow-hidden rounded-2xl border border-bone-50/8 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-ember-400/40"
                 >
-                  <ArtPanel seed={obj.slug} icon={OBJECT_ICONS[obj.slug]} className="aspect-[4/3] transition-transform duration-700 group-hover:scale-105" />
+                  <Photo
+                    image={spaceImage(obj.slug, obj.heroImageUrl)}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    decorative
+                    className="aspect-[4/3] transition-transform duration-700 ease-[var(--ease-forge)] group-hover:scale-105"
+                    fallback={<ArtPanel seed={obj.slug} icon={OBJECT_ICONS[obj.slug]} className="aspect-[4/3] transition-transform duration-700 group-hover:scale-105" />}
+                  />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950 via-ink-950/80 to-transparent p-6 pt-20">
                     <h3 className="font-display text-2xl font-semibold text-bone-50">{obj.name}</h3>
                     <p className="mt-1 text-sm text-bone-200">{obj.tagline}</p>
@@ -226,7 +236,9 @@ export default async function HomePage() {
       {/* Membership teaser */}
       <Section>
         <Container>
-          <div className="grain relative overflow-hidden rounded-3xl border border-ember-400/30 bg-[linear-gradient(135deg,rgba(194,65,12,0.35),rgba(28,27,25,0.9)_55%)] p-8 sm:p-14">
+          <div className="grain relative overflow-hidden rounded-3xl border border-ember-400/30 p-8 sm:p-14">
+            <Photo image={SITE_IMAGES.membership} sizes="(min-width: 1280px) 1200px, 100vw" decorative className="absolute inset-0 -z-10" />
+            <div aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(194,65,12,0.45),rgba(18,17,16,0.92)_50%,rgba(18,17,16,0.7))]" />
             <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
               <SectionHeading
                 eyebrow="Memberships"
@@ -268,7 +280,9 @@ export default async function HomePage() {
       </Section>
 
       {/* Final CTA */}
-      <section className="relative overflow-hidden border-t border-bone-50/8 bg-ink-950 py-24">
+      <section className="relative overflow-hidden border-t border-bone-50/8 bg-ink-950 py-32">
+        <Photo image={SITE_IMAGES.cta} sizes="100vw" decorative className="absolute inset-0 opacity-60" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-ink-950 via-ink-950/40 to-ink-950" />
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(50%_80%_at_50%_100%,rgba(194,65,12,0.3),transparent_70%)]" />
         <Container className="relative flex flex-col items-center gap-8 text-center">
           <p className="font-display text-[clamp(2.5rem,7vw,6rem)] font-semibold uppercase leading-[0.9] text-bone-50">

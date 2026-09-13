@@ -6,6 +6,8 @@ import { services } from "@/server/container";
 import { isDomainError } from "@/server/domain/errors";
 import { Container } from "@/components/layout/section";
 import { Monogram } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { trainerImage } from "@/lib/imagery";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClassCard } from "@/components/cards/class-card";
@@ -79,7 +81,13 @@ export default async function TrainerDetailPage({ params }: { params: Promise<{ 
 
       <Container className="grid gap-12 py-12 lg:grid-cols-[26rem_1fr] lg:py-16">
         <div className="flex flex-col gap-5 lg:sticky lg:top-24 lg:self-start">
-          <Monogram name={trainer.name} className="aspect-[4/5] animate-fade-up rounded-3xl border border-bone-50/8" />
+          <Photo
+            image={trainerImage(trainer.slug, trainer.photoUrl)}
+            sizes="(min-width: 1024px) 26rem, 100vw"
+            priority
+            className="aspect-[4/5] animate-fade-up rounded-3xl border border-bone-50/8 shadow-warm-lg"
+            fallback={<Monogram name={trainer.name} className="aspect-[4/5] animate-fade-up rounded-3xl border border-bone-50/8" />}
+          />
           <div className="rounded-2xl border border-bone-50/8 bg-ink-800/60 p-6">
             <h2 className="flex items-center gap-2 font-display text-lg text-bone-50">
               <Award className="size-5 text-ember-400" aria-hidden /> Certifications

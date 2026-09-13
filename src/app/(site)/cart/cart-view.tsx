@@ -7,6 +7,8 @@ import { useCart } from "@/components/store/cart-context";
 import { usePricedCart } from "@/components/store/use-priced-cart";
 import { QuantityStepper } from "@/components/store/product-purchase";
 import { ArtPanel, CATEGORY_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { productImage } from "@/lib/imagery";
 import { Button } from "@/components/ui/button";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/states";
 import { formatUsd, titleCase } from "@/lib/format";
@@ -41,7 +43,14 @@ export function CartView() {
         <ul className="flex flex-col gap-4">
           {priced.items.map((item) => (
             <li key={item.productId} className="flex gap-4 rounded-2xl border border-bone-50/8 bg-ink-800/60 p-4 sm:gap-5">
-              <ArtPanel seed={item.slug} icon={CATEGORY_ICONS[item.category]} className="size-24 shrink-0 rounded-xl" intensity={0.7} />
+              <Photo
+                image={productImage(item.slug)}
+                sizes="96px"
+                decorative
+                grade={false}
+                className="size-24 shrink-0 rounded-xl"
+                fallback={<ArtPanel seed={item.slug} icon={CATEGORY_ICONS[item.category]} className="size-24 shrink-0 rounded-xl" intensity={0.7} />}
+              />
               <div className="flex flex-1 flex-col gap-2">
                 <div className="flex items-start justify-between gap-3">
                   <div>

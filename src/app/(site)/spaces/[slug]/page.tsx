@@ -6,6 +6,8 @@ import { services } from "@/server/container";
 import { isDomainError } from "@/server/domain/errors";
 import { Container } from "@/components/layout/section";
 import { ArtPanel, OBJECT_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { spaceImage } from "@/lib/imagery";
 import { Button } from "@/components/ui/button";
 import { ClassCard } from "@/components/cards/class-card";
 import { TrainerCard } from "@/components/cards/trainer-card";
@@ -70,8 +72,15 @@ export default async function SpaceDetailPage({ params }: { params: Promise<{ sl
       />
 
       <section className="grain relative -mt-18 overflow-hidden pt-18">
-        <ArtPanel seed={obj.slug} icon={OBJECT_ICONS[obj.slug]} className="absolute inset-0 -z-10 opacity-70" intensity={1.2} />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-900 via-ink-900/70 to-ink-900/20" />
+        <Photo
+          image={spaceImage(obj.slug, obj.heroImageUrl)}
+          sizes="100vw"
+          priority
+          className="absolute inset-0 -z-10"
+          fallback={<ArtPanel seed={obj.slug} icon={OBJECT_ICONS[obj.slug]} className="absolute inset-0 -z-10 opacity-70" intensity={1.2} />}
+        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-900 via-ink-900/75 to-ink-900/25" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/70 to-transparent" />
         <Container className="flex min-h-[60vh] flex-col justify-end gap-6 pb-14 pt-20">
           <nav aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-bone-300">

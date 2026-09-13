@@ -6,6 +6,8 @@ import { services } from "@/server/container";
 import { isDomainError } from "@/server/domain/errors";
 import { Container } from "@/components/layout/section";
 import { ArtPanel, CATEGORY_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { productImage } from "@/lib/imagery";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/cards/product-card";
 import { ProductPurchase } from "@/components/store/product-purchase";
@@ -72,7 +74,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         ]}
       />
       <Container className="grid gap-12 py-12 lg:grid-cols-2 lg:py-16">
-        <ArtPanel seed={product.slug} icon={CATEGORY_ICONS[product.category]} className="aspect-square animate-fade-up rounded-3xl border border-bone-50/8" />
+        <Photo
+          image={productImage(product.slug, product.images)}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          priority
+          grade={false}
+          className="aspect-square animate-fade-up rounded-3xl border border-bone-50/8 shadow-warm-lg"
+          fallback={<ArtPanel seed={product.slug} icon={CATEGORY_ICONS[product.category]} className="aspect-square animate-fade-up rounded-3xl border border-bone-50/8" />}
+        />
         <div className="flex animate-fade-up flex-col gap-6 [animation-delay:120ms]">
           <nav aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-ink-300">

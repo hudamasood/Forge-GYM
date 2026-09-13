@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock, Flame, Users } from "lucide-react";
 import { ArtPanel, OBJECT_ICONS } from "@/components/brand/art";
+import { Photo } from "@/components/brand/photo";
+import { classImage } from "@/lib/imagery";
 import { Badge } from "@/components/ui/badge";
 import { DifficultyBadge } from "@/components/cards/badges";
 import type { Difficulty } from "@/server/domain/types";
@@ -13,6 +15,7 @@ export interface ClassCardData {
   durationMinutes: number;
   estCalories: number;
   defaultCapacity: number;
+  imageUrl?: string | null;
   accessObject: { slug: string; name: string };
 }
 
@@ -20,7 +23,15 @@ export function ClassCard({ gymClass, headingLevel = "h3" }: { gymClass: ClassCa
   const Heading = headingLevel;
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-bone-50/8 bg-ink-800/80 transition-[transform,border-color,box-shadow] duration-300 ease-[var(--ease-forge)] focus-within:border-ember-400/50 hover:-translate-y-1 hover:border-bone-50/15 hover:shadow-warm-lg">
-      <ArtPanel seed={gymClass.slug} icon={OBJECT_ICONS[gymClass.accessObject.slug]} className="aspect-[16/9] transition-transform duration-500 group-hover:scale-[1.03]" />
+      <div className="overflow-hidden">
+        <Photo
+          image={classImage(gymClass.slug, gymClass.imageUrl)}
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          decorative
+          className="aspect-[16/9] transition-transform duration-700 ease-[var(--ease-forge)] group-hover:scale-[1.04]"
+          fallback={<ArtPanel seed={gymClass.slug} icon={OBJECT_ICONS[gymClass.accessObject.slug]} className="aspect-[16/9] transition-transform duration-500 group-hover:scale-[1.03]" />}
+        />
+      </div>
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex flex-wrap items-center gap-2">
           <Badge tone="steel">{gymClass.accessObject.name}</Badge>
