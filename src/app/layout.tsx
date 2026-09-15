@@ -30,8 +30,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${oswald.variable} ${workSans.variable}`}>
-      <body className="min-h-dvh antialiased">
+    // suppressHydrationWarning: browser extensions stamp attributes on <html>/<body> before
+    // React hydrates. It only silences attribute diffs on these two elements, not their children.
+    <html lang="en" className={`${oswald.variable} ${workSans.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className="min-h-dvh antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
