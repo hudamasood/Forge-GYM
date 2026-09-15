@@ -9,7 +9,8 @@ import { Spinner } from "./spinner";
  * loading states (spec B4). The ember gradient is reserved for `primary`.
  */
 export const buttonVariants = cva(
-  "relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium tracking-wide transition-[background-color,border-color,color,transform,box-shadow] duration-200 ease-[var(--ease-forge)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember-400 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress [&_svg]:size-4 [&_svg]:shrink-0",
+  // Long labels may wrap on phones (min-h, not h) instead of pushing the page wider than the screen.
+  "relative inline-flex select-none items-center justify-center gap-2 text-center text-balance whitespace-normal sm:whitespace-nowrap rounded-lg font-medium tracking-wide transition-[background-color,border-color,color,transform,box-shadow] duration-200 ease-[var(--ease-forge)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ember-400 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -22,9 +23,9 @@ export const buttonVariants = cva(
         light: "bg-bone-50 text-ink-900 hover:bg-bone-100 active:bg-bone-200",
       },
       size: {
-        sm: "h-9 px-3.5 text-sm",
-        md: "h-11 px-5 text-sm",
-        lg: "h-13 px-7 text-base",
+        sm: "min-h-9 px-3.5 py-1.5 text-sm",
+        md: "min-h-11 px-5 py-2 text-sm",
+        lg: "min-h-13 px-7 py-2.5 text-base",
         icon: "size-10",
       },
     },

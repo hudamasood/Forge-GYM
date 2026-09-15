@@ -113,7 +113,7 @@ export function AmbientPlayer() {
   }, []);
 
   return (
-    <div ref={rootRef} className="fixed bottom-4 left-4 z-[55] print:hidden">
+    <div ref={rootRef} className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-[55] print:hidden">
       <audio ref={audioRef} src={current.src} preload="none" onEnded={next} />
       <div
         className={cn(
@@ -131,7 +131,8 @@ export function AmbientPlayer() {
           {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4 translate-x-px" aria-hidden />}
         </button>
 
-        <div className="flex items-center gap-3 overflow-hidden pr-1">
+        {/* On phones the idle player is just the round button so it covers as little content as possible. */}
+        <div className={cn("items-center gap-3 overflow-hidden pr-1", playing ? "flex" : "hidden sm:flex")}>
           <span aria-hidden className="flex h-4 items-end gap-[3px] pl-1">
             {[0, 1, 2, 3].map((bar) => (
               <span

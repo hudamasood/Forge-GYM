@@ -71,7 +71,7 @@ export default async function HomePage() {
             <p className="max-w-xl animate-fade-up text-lg leading-relaxed text-bone-200 [animation-delay:450ms]">
               Six dedicated training spaces. Coaches who obsess over your form. Memberships built around how you actually train — one space, or all of them.
             </p>
-            <div className="flex animate-fade-up flex-wrap gap-3 [animation-delay:550ms]">
+            <div className="flex animate-fade-up flex-col gap-3 [animation-delay:550ms] sm:flex-row sm:flex-wrap">
               <Button asChild size="lg">
                 <Link href="/memberships">
                   Find your membership <ArrowRight aria-hidden />
@@ -159,7 +159,7 @@ export default async function HomePage() {
       <Section className="border-y border-bone-50/6 bg-ink-950">
         <Container className="flex flex-col gap-14">
           <SectionHeading align="center" eyebrow="How it works" title="From first visit to fully forged" />
-          <ol className="grid gap-px overflow-hidden rounded-2xl border border-bone-50/8 bg-bone-50/8 sm:grid-cols-2 lg:grid-cols-6">
+          <ol className="grid gap-px overflow-hidden rounded-2xl border border-bone-50/8 bg-bone-50/8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {JOURNEY.map((item, i) => (
               <Reveal as="li" key={item.step} delay={i * 80} className="group flex flex-col gap-4 bg-ink-900 p-6 transition-colors hover:bg-ink-800">
                 <span className="flex items-center justify-between">

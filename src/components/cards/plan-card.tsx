@@ -28,8 +28,9 @@ export function PlanCard({ plan, interval, action }: { plan: PlanCardData; inter
           : "border-bone-50/8 bg-ink-800/80 hover:border-bone-50/15 hover:shadow-warm",
       )}
     >
+      {/* In the flow (not absolutely positioned) so it can never sit on top of the plan name on narrow cards. */}
       {featured && (
-        <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-ember-500 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-bone-50">
+        <span className="-mb-2 inline-flex items-center gap-1.5 self-start rounded-full bg-ember-500 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-bone-50">
           <Crown className="size-3.5" aria-hidden /> Best value
         </span>
       )}
