@@ -44,6 +44,7 @@ run("npx prisma generate");
 if (environment === "production") {
   const directEnv = { ...process.env, DATABASE_URL: directDatabaseUrl() };
   console.log(`\nSchema commands use ${new URL(directEnv.DATABASE_URL).hostname}`);
+  if (process.env.RELEASE_MIGRATION_LOCK === "1") run("node scripts/release-migration-lock.mjs", directEnv);
   run("npx prisma migrate deploy", directEnv);
   // One-off seeding from inside Vercel, where the Sensitive DATABASE_URL is available.
   // Set SEED_PRODUCTION=1 for a single deployment, then remove it. The seed is
