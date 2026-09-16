@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts"],
+    include: ["src/**/*.test.ts", "prisma/**/*.test.ts"],
     exclude: ["src/**/*.integration.test.ts", "node_modules/**"],
     coverage: {
       provider: "v8",

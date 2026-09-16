@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "vercel-build": "node scripts/vercel-build.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -18,6 +19,9 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
+    "db:seed:production": "tsx --env-file=.env.production.local prisma/seed.ts --production",
+    "db:status:production": "node --env-file=.env.production.local node_modules/prisma/build/index.js migrate status",
+    "db:deploy:production": "node --env-file=.env.production.local node_modules/prisma/build/index.js migrate deploy",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
