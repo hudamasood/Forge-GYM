@@ -18,7 +18,7 @@ const csp = [
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://checkout.stripe.com",
+  "form-action 'self' https://checkout.stripe.com https://getsafepay.com https://sandbox.api.getsafepay.com",
   "object-src 'none'",
   ...(isDev ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");

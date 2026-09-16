@@ -6,6 +6,14 @@ export const config = {
   siteUrl: (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")).replace(/\/$/, ""),
   isProduction: process.env.NODE_ENV === "production",
   authSecret: process.env.AUTH_SECRET ?? "",
+  /** "safepay" or "stripe". Unset keeps the previous behaviour: Stripe when its key exists. */
+  paymentProvider: (process.env.PAYMENT_PROVIDER ?? "").trim().toLowerCase(),
+  safepay: {
+    environment: (process.env.SAFEPAY_ENVIRONMENT === "production" ? "production" : "sandbox") as "production" | "sandbox",
+    apiKey: process.env.SAFEPAY_API_KEY ?? "",
+    secretKey: process.env.SAFEPAY_SECRET_KEY ?? "",
+    webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET ?? "",
+  },
   stripe: {
     secretKey: process.env.STRIPE_SECRET_KEY ?? "",
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
@@ -23,4 +31,5 @@ export const config = {
  * ENABLE_TEST_CHECKOUT=1 (CI e2e / staging). Never set that on a real
  * deployment; it is ignored whenever a Stripe key is configured.
  */
-export const devPaymentsEnabled = !config.stripe.secretKey && (!config.isProduction || process.env.ENABLE_TEST_CHECKOUT === "1");
+export const devPaymentsEnabled =
+  config.paymentProvider !== "safepay" && !config.stripe.secretKey && (!config.isProduction || process.env.ENABLE_TEST_CHECKOUT === "1");

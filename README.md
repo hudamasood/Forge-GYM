@@ -70,6 +70,24 @@ npm run db:seed:production                                        # catalog: spa
 
 `.env.production.local` is git-ignored — delete it when you are done. Production seeding skips the demo logins (their password is public) unless you add `--with-demo-accounts`. Re-run `db:seed:production` to extend the class timetable, since each run schedules the next 21 days.
 
+### Payments with Safepay (Pakistan, USD)
+
+Set `PAYMENT_PROVIDER=safepay` to use [Safepay](https://safepay.com.pk/) instead of Stripe. Leaving it unset keeps Stripe (or the test-mode checkout in development).
+
+| Variable | Where to find it |
+| -------- | ---------------- |
+| `PAYMENT_PROVIDER` | `safepay` |
+| `SAFEPAY_ENVIRONMENT` | `sandbox` while testing, `production` when live |
+| `SAFEPAY_API_KEY` | Safepay dashboard → Developers → API keys (public key) |
+| `SAFEPAY_SECRET_KEY` | Same page (secret key) |
+| `SAFEPAY_WEBHOOK_SECRET` | Developers → Endpoints → your endpoint's shared secret |
+
+1. **Webhook:** in Developers → Endpoints add `https://<your-domain>/api/webhooks/safepay` and subscribe to `payment.succeeded`, `subscription.created`, `subscription.payment.succeeded`, `subscription.payment.failed`, `subscription.canceled` and `subscription.ended`.
+2. **Membership plans:** Safepay bills subscriptions against plans created in its dashboard (Subscriptions → Plans; currency USD, amount in cents, interval MONTH or YEAR, `billing_cycles` 0). Create a monthly and an annual plan for each FORGE plan and paste the `plan_…` ids into Admin → Memberships. A plan without its Safepay id cannot be bought online.
+3. **Store orders** need no dashboard setup — the amount is computed from the database at checkout.
+
+How it maps: orders are marked paid from `payment.succeeded` (matched by `metadata.order_id`); the first subscription payment creates the membership, renewals extend `currentPeriodEnd`, failed renewals mark it past due, and cancellation/ending cancels it. Every webhook is verified with HMAC-SHA512 (`X-SFPY-SIGNATURE`) and processed once per event token. The subscription `reference` is HMAC-signed over the member, plan, interval and Safepay plan id, so swapping the plan in the checkout URL is rejected. Note: Safepay cancels subscriptions immediately, so a member who cancels loses access at once rather than at the end of the paid period. Safepay's hosted checkout does not collect a shipping address.
+
 ### Payments in development
 
 Without `STRIPE_SECRET_KEY`, checkout uses a clearly labelled **test-mode checkout** (`/dev-checkout`) that applies the exact event the Stripe webhook would. It is never available in production unless `ENABLE_TEST_CHECKOUT=1` is set (CI only) and is always disabled when a Stripe key exists. With Stripe keys, forward webhooks locally:

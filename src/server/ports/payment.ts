@@ -19,6 +19,8 @@ export interface SubscriptionCheckoutInput {
   interval: BillingInterval;
   /** Pre-configured provider price; when absent the adapter prices inline from `amount`. */
   priceId: string | null;
+  /** Safepay plan token for this plan and interval (Safepay subscriptions are billed against dashboard plans). */
+  safepayPlanId: string | null;
   metadata: { userId: string; planId: string; interval: BillingInterval };
   successUrl: string;
   cancelUrl: string;

@@ -103,7 +103,7 @@ export function CartView() {
             Checkout <ArrowRight aria-hidden />
           </Link>
         </Button>
-        <p className="text-center text-xs text-ink-300">Prices in USD. Payment handled securely by Stripe.</p>
+        <p className="text-center text-xs text-ink-300">Prices in USD. Payment is processed securely on our payment partner&apos;s checkout page.</p>
       </aside>
     </div>
   );

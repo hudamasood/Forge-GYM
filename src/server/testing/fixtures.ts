@@ -108,6 +108,8 @@ export function buildWorld() {
     priceAnnual: monthly * 10,
     stripePriceIdMonthly: null,
     stripePriceIdAnnual: null,
+    safepayPlanIdMonthly: null,
+    safepayPlanIdAnnual: null,
     benefits: [],
     sortOrder: 0,
   });

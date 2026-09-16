@@ -159,6 +159,18 @@ export const planPriceSchema = z.object({
     .max(100)
     .optional()
     .transform((v) => v || null),
+  safepayPlanIdMonthly: z
+    .string()
+    .trim()
+    .max(100)
+    .optional()
+    .transform((v) => v || null),
+  safepayPlanIdAnnual: z
+    .string()
+    .trim()
+    .max(100)
+    .optional()
+    .transform((v) => v || null),
 });
 
 export const accessObjectInputSchema = z.object({

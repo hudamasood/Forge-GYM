@@ -144,6 +144,8 @@ export interface MembershipPlan {
   priceAnnual: number;
   stripePriceIdMonthly: string | null;
   stripePriceIdAnnual: string | null;
+  safepayPlanIdMonthly: string | null;
+  safepayPlanIdAnnual: string | null;
   benefits: string[];
   sortOrder: number;
 }

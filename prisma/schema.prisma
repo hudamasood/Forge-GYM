@@ -217,6 +217,9 @@ model MembershipPlan {
   priceAnnual          Int // cents, USD
   stripePriceIdMonthly String?
   stripePriceIdAnnual  String?
+  // Safepay plan tokens (plan_...) from the Safepay dashboard, one per billing interval.
+  safepayPlanIdMonthly String?
+  safepayPlanIdAnnual  String?
   benefits             Json
   sortOrder            Int      @default(0)
   createdAt            DateTime @default(now())

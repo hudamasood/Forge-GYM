@@ -72,6 +72,7 @@ export class MembershipService {
       amount: interval === "MONTHLY" ? plan.priceMonthly : plan.priceAnnual,
       interval,
       priceId: interval === "MONTHLY" ? plan.stripePriceIdMonthly : plan.stripePriceIdAnnual,
+      safepayPlanId: interval === "MONTHLY" ? plan.safepayPlanIdMonthly : plan.safepayPlanIdAnnual,
       metadata: { userId, planId: plan.id, interval },
       ...urls,
     });

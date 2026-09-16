@@ -234,6 +234,8 @@ export interface PlanInput {
   benefits: string[];
   stripePriceIdMonthly?: string | null;
   stripePriceIdAnnual?: string | null;
+  safepayPlanIdMonthly?: string | null;
+  safepayPlanIdAnnual?: string | null;
   sortOrder?: number;
 }
 

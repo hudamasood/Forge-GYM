@@ -7,11 +7,13 @@ import "server-only";
 import { prisma } from "@/server/db";
 import { config, devPaymentsEnabled } from "@/server/config";
 import { systemClock } from "@/server/ports/security";
+import { PaymentError } from "@/server/domain/errors";
 import type { IPaymentProvider } from "@/server/ports/payment";
 import type { INotificationChannel } from "@/server/ports/notification";
 import { BcryptPasswordHasher } from "@/server/adapters/bcrypt-hasher";
 import { DevPaymentProvider } from "@/server/adapters/dev-payment-provider";
 import { StripePaymentProvider } from "@/server/adapters/stripe-payment-provider";
+import { SafepayPaymentProvider } from "@/server/adapters/safepay-payment-provider";
 import { ConsoleNotificationChannel, ResendNotificationChannel } from "@/server/adapters/notification-channels";
 import { PrismaPasswordResetTokenRepository, PrismaUserRepository } from "@/server/repositories/prisma/user-repositories";
 import {
@@ -46,16 +48,23 @@ import { ScheduleService } from "@/server/services/schedule-service";
 import { TrainerService } from "@/server/services/trainer-service";
 import { UserService } from "@/server/services/user-service";
 
+function unconfiguredPayments(reason: string): IPaymentProvider {
+  const fail = () => Promise.reject(new PaymentError(reason));
+  return { isConfigured: false, createSubscriptionCheckout: fail, createPaymentCheckout: fail, cancelSubscriptionAtPeriodEnd: fail, parseWebhookEvent: fail };
+}
+
 function createPaymentProvider(): IPaymentProvider {
+  if (config.paymentProvider === "safepay") {
+    const { apiKey, secretKey, webhookSecret, environment } = config.safepay;
+    if (!apiKey || !secretKey || !webhookSecret) {
+      console.error("[payments] PAYMENT_PROVIDER=safepay but SAFEPAY_API_KEY, SAFEPAY_SECRET_KEY or SAFEPAY_WEBHOOK_SECRET is missing");
+      return unconfiguredPayments("Online payments are temporarily unavailable. Please try again later.");
+    }
+    return new SafepayPaymentProvider({ environment, apiKey, secretKey, webhookSecret });
+  }
   if (config.stripe.secretKey) return new StripePaymentProvider(config.stripe.secretKey, config.stripe.webhookSecret);
   if (devPaymentsEnabled) return new DevPaymentProvider(config.siteUrl, config.authSecret || "forge-dev-secret");
-  return {
-    isConfigured: false,
-    createSubscriptionCheckout: () => Promise.reject(new Error("Payments are not configured")),
-    createPaymentCheckout: () => Promise.reject(new Error("Payments are not configured")),
-    cancelSubscriptionAtPeriodEnd: () => Promise.reject(new Error("Payments are not configured")),
-    parseWebhookEvent: () => Promise.reject(new Error("Payments are not configured")),
-  };
+  return unconfiguredPayments("Online payments are not available yet.");
 }
 
 function createNotificationChannel(): INotificationChannel {

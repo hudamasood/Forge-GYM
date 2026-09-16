@@ -110,7 +110,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <ProductPurchase product={{ id: product.id, slug: product.slug, name: product.name, category: product.category, price: product.price, stock: product.stock }} />
           <ul className="mt-2 grid gap-3 border-t border-bone-50/8 pt-6 text-sm text-bone-200 sm:grid-cols-3">
             <li className="flex items-center gap-2">
-              <ShieldCheck className="size-5 text-ember-400" aria-hidden /> Secure Stripe checkout
+              <ShieldCheck className="size-5 text-ember-400" aria-hidden /> Secure hosted checkout
             </li>
             <li className="flex items-center gap-2">
               {digital ? <PackageCheck className="size-5 text-ember-400" aria-hidden /> : <Truck className="size-5 text-ember-400" aria-hidden />}

@@ -22,7 +22,7 @@ export default async function AdminMembershipsPage({ searchParams }: { searchPar
 
   return (
     <>
-      <PortalHeader title="Memberships" description="Plan pricing and every member's subscription. Prices are in USD; leave Stripe price ids empty to price checkout inline." />
+      <PortalHeader title="Memberships" description="Plan pricing and every member's subscription. Prices are in USD. With Safepay, each plan needs its Safepay plan id (monthly and annual) before members can subscribe online; Stripe price ids are optional." />
 
       <Panel title="Plans & pricing" className="mb-8">
         <ul className="flex flex-col divide-y divide-bone-50/6">
