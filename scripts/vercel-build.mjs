@@ -29,6 +29,10 @@ run("npx prisma generate");
 
 if (environment === "production") {
   run("npx prisma migrate deploy");
+  // One-off seeding from inside Vercel, where the Sensitive DATABASE_URL is available.
+  // Set SEED_PRODUCTION=1 for a single deployment, then remove it. The seed is
+  // create-only (never updates or deletes) and skips demo logins in production.
+  if (process.env.SEED_PRODUCTION === "1") run("npx tsx prisma/seed.ts --production");
 } else {
   console.log(`\nSkipping prisma migrate deploy (VERCEL_ENV=${environment}); migrations are applied by production deployments only.`);
 }

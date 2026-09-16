@@ -58,7 +58,7 @@ Seed accounts (password `Forge123!`): `admin@forge.example`, `trainer@forge.exam
 The app reads a single variable, `DATABASE_URL`, for both the runtime client and the Prisma CLI. The Vercel Prisma Postgres integration sets it (and `PRISMA_DATABASE_URL`, which the app does not use) for Production and Preview.
 
 - **Build** — `package.json` defines `vercel-build`, so Vercel runs `scripts/vercel-build.mjs`: `prisma generate`, then `prisma migrate deploy` **on production deployments only** (previews share the production database), then `next build`. `prisma migrate dev`/`db push` are never used in deployment.
-- **Seed data** — never runs automatically. Seed the production database once, from your machine:
+- **Seed data** — never runs automatically. The Prisma Postgres integration stores `DATABASE_URL` as a *Sensitive* variable, which `vercel env pull` cannot download, so seed from inside a production build: add `SEED_PRODUCTION=1` to the Production environment, redeploy, then remove the variable. If you have a non-sensitive copy of the connection string you can instead seed from your machine:
 
 ```bash
 npx vercel link                                                   # once, pick the Forge-GYM project
