@@ -50,6 +50,8 @@ if (environment === "production") {
   // Set SEED_PRODUCTION=1 for a single deployment, then remove it. The seed is
   // create-only (never updates or deletes) and skips demo logins in production.
   if (process.env.SEED_PRODUCTION === "1") run("npx tsx prisma/seed.ts --production", directEnv);
+  // One-off: save Safepay plan ids (see scripts/set-safepay-plan-ids.mjs), then remove the variable.
+  if (process.env.SAFEPAY_PLAN_IDS) run("node scripts/set-safepay-plan-ids.mjs", directEnv);
 } else {
   console.log(`\nSkipping prisma migrate deploy (VERCEL_ENV=${environment}); migrations are applied by production deployments only.`);
 }
